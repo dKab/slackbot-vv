@@ -3,7 +3,7 @@ var Promise = require('bluebird');
 var Spooky = require('spooky');
 
 module.exports = function getAnswer(question) {
-    var promise = new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
         var env = _.clone(process.env),
             path = __dirname + '/node_modules/.bin';
@@ -34,7 +34,7 @@ module.exports = function getAnswer(question) {
             }
             spooky.start('http://sprosi-putina.ru/');
 
-            spooky.then([{question: question}, function(question) {
+            spooky.then([{question: question}, function() {
                 this.fill('form[name="askmore"]', { questionask: question}, false);
             }]);
 
@@ -59,7 +59,5 @@ module.exports = function getAnswer(question) {
             resolve(answer);
         });
     });
-
-    return promise;
 };
 

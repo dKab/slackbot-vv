@@ -25,7 +25,8 @@ vvBot.prototype._onStart = function () {
 vvBot.prototype._onMessage = function (message) {
     if (this._isChatMessage(message) &&
         this._isChannelConversation(message) &&
-        this._isMentioningMe(message)) {
+        this._isMentioningMe(message) &&
+        !this._isFromMyself(message)) {
 
         this._reply(message);
     }
@@ -75,6 +76,10 @@ vvBot.prototype._isEmptyMessage = function(text) {
 
 vvBot.prototype._isChatMessage = function (messageObj) {
     return messageObj.type === 'message' && Boolean(messageObj.text);
+};
+
+vvBot.prototype._isFromMyself = function (message) {
+    return message.user === this.user.id;
 };
 
 vvBot.prototype._isChannelConversation = function (messageObj) {

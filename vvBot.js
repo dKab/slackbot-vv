@@ -33,7 +33,7 @@ vvBot.prototype._onMessage = function (message) {
 };
 
 vvBot.prototype._reply = function (originalMessage) {
-    var channel = this._getChannelById(originalMessage.channel),
+    var channel = this._getChannelById(originalMessage.channel) || originalMessage.channel,
         reply, self = this;
 
     if (this._isEmptyMessage(originalMessage.text)) {
@@ -49,11 +49,11 @@ vvBot.prototype._reply = function (originalMessage) {
                 reply = 'Я даже не стану на это отвечать. Следующий, пожалуйста.'; //don't give away the fact that we've broken :)
             })
             .finally(function() {
-                self.postMessageToChannel(channel.name, reply, {as_user: true});
+                self.sendAsUser(channel, reply);
             });
     }
     if (reply) {
-        self.postMessageToChannel(channel.name, reply, {as_user: true});
+        self.sendAsUser(channel, reply);
     }
 };
 
@@ -63,6 +63,14 @@ vvBot.prototype._loadBotUser = function () {
     this.user = this.users.filter(function (user) {
         return user.name === self.name;
     })[0];
+};
+
+vvBot.prototype.sendAsUser = function(channel, message) {
+    if (_.isObject(channel)) {
+        this.postMessageToChannel(channel.name, message, {as_user: true});
+    } else {
+        this.postMessage(channel, message, {as_user: true});
+    }
 };
 
 vvBot.prototype._isEmptyMessage = function(text) {

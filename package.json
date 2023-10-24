@@ -13,7 +13,7 @@
     "casperjs": "1.1.1",
     "phantomjs": "2.1.7",
     "spooky": "0.2.5",
-    "lodash": "4.13.1",
+    "lodash": "4.17.21",
     "bluebird": "3.4.0"
   },
   "engines": {
